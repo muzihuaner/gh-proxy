@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=0">
+    <meta name="author" content="Sonder">
+    <link rel="shortcut icon" href="https://files.codelife.cc/tools-icon/dino.svg">
+    <title>GitHub 文件加速 - 欢哥科技</title>
+    <meta name="description" content="GitHub文件下载加速" />
+    <meta name="keywords" content="gitHub,proxy,gitHub下载,github加速,github代理,加速下载" />
+
+    <style>
+        [class*=" mo-tipsy--"],
+        [class^=mo-tipsy--] {
+            position: relative;
+            overflow: visible
+        }
+        
+        [class*=" mo-tipsy--"]:after,
+        [class*=" mo-tipsy--"]:before,
+        [class^=mo-tipsy--]:after,
+        [class^=mo-tipsy--]:before {
+            position: absolute;
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0);
+            visibility: hidden;
+            opacity: 0;
+            pointer-events: none;
+            -webkit-transition: all .18s ease-out .18s;
+            transition: all .18s ease-out .18s;
+            z-index: 10;
+            -webkit-transform-origin: top;
+            transform-origin: top;
+            box-sizing: border-box;
+            visibility: hidden
+        }
+        
+        [class*=" mo-tipsy--"]:before,
+        [class^=mo-tipsy--]:before {
+            content: '';
+            background: 0 0;
+            border: 6px solid transparent
+        }
+        
+        [class*=" mo-tipsy--"]:after,
+        [class^=mo-tipsy--]:after {
+            background-color: rgba(17, 17, 17, .9);
+            border-radius: 1px;
+            color: #fff;
+            content: attr(data-tipsy);
+            font-size: 12px;
+            margin: 0;
+            padding: 8px 10px;
+            line-height: 1;
+            white-space: nowrap;
+            text-align: center;
+            max-height: 80vh
+        }
+        
+        [class*=" mo-tipsy--"]:hover:after,
+        [class*=" mo-tipsy--"]:hover:before,
+        [class^=mo-tipsy--]:hover:after,
+        [class^=mo-tipsy--]:hover:before {
+            visibility: visible;
+            opacity: 1;
+            pointer-events: auto
+        }
+        
+        [class*=" mo-tipsy--"]:not([data-tipsy]):hover:after,
+        [class*=" mo-tipsy--"]:not([data-tipsy]):hover:before,
+        [class^=mo-tipsy--]:not([data-tipsy]):hover:after,
+        [class^=mo-tipsy--]:not([data-tipsy]):hover:before {
+            display: none
+        }
+        
+        .mo-tipsy--top:after,
+        .mo-tipsy--top:before,
+        .mo-tipsy:after,
+        .mo-tipsy:before {
+            left: 50%;
+            bottom: 100%;
+            -webkit-transform: translate3d(-50%, 10px, 0);
+            transform: translate3d(-50%, 10px, 0)
+        }
+        
+        .mo-tipsy--top:before,
+        .mo-tipsy:before {
+            margin-bottom: -1px;
+            border-top-color: rgba(17, 17, 17, .9)
+        }
+        
+        .mo-tipsy--top:after,
+        .mo-tipsy:after {
+            margin-bottom: 11px
+        }
+        
+        .mo-tipsy--top:hover:after,
+        .mo-tipsy--top:hover:before,
+        .mo-tipsy:hover:after,
+        .mo-tipsy:hover:before {
+            -webkit-transform: translate3d(-50%, 0, 0);
+            transform: translate3d(-50%, 0, 0)
+        }
+        
+        .mo-tipsy--bottom:after,
+        .mo-tipsy--bottom:before {
+            left: 50%;
+            top: 100%;
+            -webkit-transform: translate3d(-50%, -10px, 0);
+            transform: translate3d(-50%, -10px, 0)
+        }
+        
+        .mo-tipsy--bottom:before {
+            margin-top: -1px;
+            border-bottom-color: rgba(17, 17, 17, .9)
+        }
+        
+        .mo-tipsy--bottom:after {
+            margin-top: 11px
+        }
+        
+        .mo-tipsy--bottom:hover:after,
+        .mo-tipsy--bottom:hover:before {
+            -webkit-transform: translate3d(-50%, 0, 0);
+            transform: translate3d(-50%, 0, 0)
+        }
+        
+        .mo-tipsy--left:after,
+        .mo-tipsy--left:before {
+            right: 100%;
+            top: 50%;
+            -webkit-transform: translate3d(10px, -50%, 0);
+            transform: translate3d(10px, -50%, 0)
+        }
+        
+        .mo-tipsy--left:before {
+            margin-right: -1px;
+            border-left-color: rgba(17, 17, 17, .9)
+        }
+        
+        .mo-tipsy--left:after {
+            margin-right: 11px
+        }
+        
+        .mo-tipsy--left:hover:after,
+        .mo-tipsy--left:hover:before {
+            -webkit-transform: translate3d(0, -50%, 0);
+            transform: translate3d(0, -50%, 0)
+        }
+        
+        .mo-tipsy--right:after,
+        .mo-tipsy--right:before {
+            left: 100%;
+            top: 50%;
+            -webkit-transform: translate3d(-10px, -50%, 0);
+            transform: translate3d(-10px, -50%, 0)
+        }
+        
+        .mo-tipsy--right:before {
+            margin-left: -1px;
+            border-right-color: rgba(17, 17, 17, .9)
+        }
+        
+        .mo-tipsy--right:after {
+            margin-left: 11px
+        }
+        
+        .mo-tipsy--right:hover:after,
+        .mo-tipsy--right:hover:before {
+            -webkit-transform: translate3d(0, -50%, 0);
+            transform: translate3d(0, -50%, 0)
+        }
+        
+        .mo-tipsy--top-left:after,
+        .mo-tipsy--top-left:before {
+            left: 0;
+            bottom: 100%;
+            -webkit-transform: translate3d(0, 10px, 0);
+            transform: translate3d(0, 10px, 0)
+        }
+        
+        .mo-tipsy--top-left:before {
+            margin-left: 6px;
+            margin-bottom: -1px;
+            border-top-color: rgba(17, 17, 17, .9)
+        }
+        
+        .mo-tipsy--top-left:after {
+            margin-bottom: 11px
+        }
+        
+        .mo-tipsy--top-left:hover:after,
+        .mo-tipsy--top-left:hover:before {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0)
+        }
+        
+        .mo-tipsy--top-right:after,
+        .mo-tipsy--top-right:before {
+            right: 0;
+            bottom: 100%;
+            -webkit-transform: translate3d(0, -10px, 0);
+            transform: translate3d(0, -10px, 0)
+        }
+        
+        .mo-tipsy--top-right:before {
+            margin-right: 6px;
+            margin-bottom: -1px;
+            border-top-color: rgba(17, 17, 17, .9)
+        }
+        
+        .mo-tipsy--top-right:after {
+            margin-bottom: 11px
+        }
+        
+        .mo-tipsy--top-right:hover:after,
+        .mo-tipsy--top-right:hover:before {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0)
+        }
+        
+        .mo-tipsy--bottom-right:after,
+        .mo-tipsy--bottom-right:before {
+            right: 0;
+            top: 100%;
+            -webkit-transform: translate3d(0, -10px, 0);
+            transform: translate3d(0, -10px, 0)
+        }
+        
+        .mo-tipsy--bottom-right:before {
+            margin-right: 6px;
+            margin-top: -1px;
+            border-bottom-color: rgba(17, 17, 17, .9)
+        }
+        
+        .mo-tipsy--bottom-right:after {
+            margin-top: 11px
+        }
+        
+        .mo-tipsy--bottom-right:hover:after,
+        .mo-tipsy--bottom-right:hover:before {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0)
+        }
+        
+        .mo-tipsy--bottom-left:after,
+        .mo-tipsy--bottom-left:before {
+            left: 0;
+            top: 100%;
+            -webkit-transform: translate3d(0, 10px, 0);
+            transform: translate3d(0, 10px, 0)
+        }
+        
+        .mo-tipsy--bottom-left:before {
+            margin-left: 6px;
+            margin-top: -1px;
+            border-bottom-color: rgba(17, 17, 17, .9)
+        }
+        
+        .mo-tipsy--bottom-left:after {
+            margin-top: 11px
+        }
+        
+        .mo-tipsy--bottom-left:hover:after,
+        .mo-tipsy--bottom-left:hover:before {
+            -webkit-transform: translate3d(0, 0, 0);
+            transform: translate3d(0, 0, 0)
+        }
+        
+        .mo-tipsy--large:after,
+        .mo-tipsy--medium:after,
+        .mo-tipsy--small:after {
+            white-space: normal;
+            line-height: 1.4;
+            word-wrap: break-word
+        }
+        
+        .mo-tipsy--small:after {
+            width: 80px
+        }
+        
+        .mo-tipsy--medium:after {
+            width: 160px
+        }
+        
+        .mo-tipsy--large:after {
+            width: 260px;
+            max-width: 90vw
+        }
+    </style>
+    <style>
+        html,
+        body,
+        div,
+        footer,
+        ol,
+        ul,
+        li,
+        input,
+        button,
+        h1,
+        h5 {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Microsoft Yahei;
+        }
+        
+        body {
+            position: relative;
+            min-height: 100vh;
+            padding-bottom: 30px;
+        }
+        /* 页头 */
+        
+        .header {
+            text-align: right;
+            padding: 20px 25px 0 0;
+            font-size: 14px;
+        }
+        
+        .header a {
+            color: #3c3c3c;
+            text-decoration: none;
+            padding-left: 18px;
+        }
+        
+        .header sup {
+            color: #f44336;
+        }
+        /* 页面主体部分 */
+        
+        .main {
+            text-align: center;
+            max-width: 750px;
+            margin: 0 auto;
+            padding: 100px 15px 0;
+        }
+        
+        .main h1 {
+            font-size: 34px;
+            font-weight: 400;
+            margin: 40px auto;
+            color: #24292e;
+        }
+        /* 表单 */
+        
+        .mk-side-form button,
+        .mk-side-form input {
+            height: 45px;
+            font-size: 16px;
+            position: relative;
+            overflow: visible;
+            outline: none;
+            -webkit-transition: all 0.4s ease;
+            -moz-transition: all 0.4s ease;
+            -ms-transition: all 0.4s ease;
+            -o-transition: all 0.4s ease;
+            transition: all 0.4s ease;
+        }
+        
+        .mk-side-form input {
+            float: left;
+            padding: 10px 8px;
+            width: 80%;
+            border: 2px solid #2378ff;
+            border-right: none;
+            border-radius: 3px 0 0 3px!important;
+        }
+        
+        .mk-side-form button {
+            cursor: pointer;
+            width: 20%;
+            border-radius: 0 3px 3px 0;
+            text-transform: uppercase;
+            color: #fff;
+            background: #2378ff;
+            border: none;
+            user-select: none;
+        }
+        
+        .mk-side-form button:hover {
+            opacity: .8;
+        }
+        /* 加速通道选择 */
+        
+        .channel-select {
+            text-align: left;
+            font-size: 14px;
+            margin-top: 10px;
+            padding-left: 2px;
+        }
+        
+        .channel-select>label {
+            cursor: pointer;
+            margin-right: 10px;
+        }
+        
+        .channel-select input[type=radio] {
+            cursor: pointer;
+            vertical-align: text-bottom;
+            margin-bottom: 3px;
+        }
+        
+        .text-ad {
+            float: right;
+            text-decoration: none;
+            color: #f44336;
+        }
+        /* 帮助信息 */
+        
+        .help {
+            text-align: left;
+            margin: 20px 0;
+            padding: 10px 15px;
+            border-radius: 5px;
+            background: #f6f6f6;
+        }
+        
+        .help h5 {
+            font-size: 14px;
+            margin: 2px 0 6px;
+        }
+        
+        .help ol {
+            margin-left: 16px;
+        }
+        
+        .help li {
+            line-height: 22px;
+        }
+        
+        .help li,
+        .help li a {
+            text-decoration: none;
+            font-size: 14px;
+            color: #7e7e7e;
+            margin-bottom: 10px;
+        }
+        /* 页脚 */
+        
+        .footer {
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 30px;
+            background: #e1e1e1;
+            color: #7e7e7e;
+            font-size: 12px;
+            line-height: 30px;
+            padding-left: 10px;
+            overflow: hidden;
+        }
+        
+        .footer-right {
+            float: right;
+            padding-right: 10px;
+        }
+        
+        .footer a {
+            color: #2c1e1c;
+        }
+        
+        @media screen and (max-width: 660px) {
+            .header {
+                padding-right: 15px;
+            }
+            .main {
+                padding-top: 50px;
+            }
+            .text-ad {
+                display: none;
+            }
+            .flash-icon {
+                display: none;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header class="header">
+        <!-- <a href="comment.html" target="_blank" rel="nofollow">反馈</a> -->
+    </header>
+    <section class="main">
+        <h1 style="margin-bottom: 50px">GitHub 文件加速</h1>
+        <form onsubmit="download(); return false;">
+            <div class="mk-side-form">
+                <input type="url" name="url" id="url-input" placeholder="请贴入来自 GitHub 的链接" required>
+                <button type="submit">
+                <span class="flash-icon">⚡ </span>
+                加速下载
+                </button>
+            </div>
+            <div class="channel-select"><span data-v-f023b6da="" class="text-sm"> 加速源:&nbsp;&nbsp;</span>
+                <label class="mo-tipsy--bottom-left" data-tipsy="由 gh.llkk.cc 提供支持">
+                    <input type="radio" name="channel" value="llkk" checked />
+                    llkk.cc
+                </label>
+                <label class="mo-tipsy--bottom-left" data-tipsy="由 github.moeyy.xyz 提供支持">
+                    <input type="radio" name="channel" value="moeyy"/>
+                    moeyy.xyz
+                </label>
+                <label class="mo-tipsy--bottom-left" data-tipsy="由 ghproxy.com 提供支持">
+                    <input type="radio" name="channel" value="ghproxy" />
+                    ghproxy.com
+                </label>
+                <label class="mo-tipsy--bottom-left" data-tipsy="由 ghproxy.net 提供支持">
+                    <input type="radio" name="channel" value="ghproxynet" />
+                    ghproxy.net
+                </label>
+                <label class="mo-tipsy--bottom-left" data-tipsy="由 ddlc.top 提供支持">
+                    <input type="radio" name="channel" value="ddlc" />
+                    ddlc.top
+                </label>
+            </div>
+        </form>
+        <div class="help">
+            <h5>页面输入示例：</h5>
+            <ol>
+                <li>支持GitHub 文件、Releases、archive、gist、raw.githubusercontent.com文件下载</li>
+                <ul>
+                    <li>分支源码: <br>https://github.com/microsoft/vscode/archive/refs/heads/main.zip</li>
+                    <li>Raw 文件: <br>https://raw.githubusercontent.com/microsoft/vscode/main/LICENSE.txt</li>
+                    <li>Releases 文件: <br>https://github.com/microsoft/vscode/archive/refs/tags/1.82.3.zip</li>
+                </ul>
+            </ol>
+            <h5>终端命令示例：</h5>
+            <ol>
+                <li>支持git clone、wget、curl等工具下载</li>
+                <ul>
+                    <li>git clone: <br>git clone
+                        <font color="blue">https://gh.llkk.cc/</font>https://github.com/microsoft/vscode</li>
+                    <li>wget: <br>wget
+                        <font color="blue">https://gh.llkk.cc/</font>https://github.com/microsoft/vscode/archive/refs/tags/1.82.3.zip</li>
+                    <li>curl: <br>curl -O
+                        <font color="blue">https://gh.llkk.cc/</font>https://github.com/microsoft/vscode/archive/refs/tags/1.82.3.zip</li>
+                </ul>
+            </ol>
+        </div>
+    </section>
+    <footer>
+        <div style="text-align: center;">
+            <p>
+                Powered by (<a href="https://gh.llkk.cc" class="text-decoration-none link-success" target="_blank">llkk.cc</a> | <a href="https://github.moeyy.xyz" class="text-decoration-none link-success" target="_blank">moeyy.xyz</a> | <a href="https://https://mirror.ghproxy.com"
+                    class="text-decoration-none link-success" target="_blank">ghproxy.com</a> | <a href="https://ghproxy.net" class="text-decoration-none link-success" target="_blank">ghproxy.net</a> | <a href="https://gh.ddlc.top" class="text-decoration-none link-success"
+                    target="_blank">ddlc.top</a>).
+            </p>
+        </div>
+    </footer>
+    <script>
+        // 获取表单和通道选择按钮
+        const form = document.querySelector('form');
+        const channelRadios = document.querySelectorAll('input[name="channel"]');
+
+        // 加速站点名称和链接映射
+        const accelerationSites = {
+            llkk: 'https://gh.llkk.cc/',
+            moeyy: 'https://github.moeyy.xyz/',
+            ghproxy: 'https://mirror.ghproxy.com/',
+            ghproxynet: 'https://ghproxy.net/',
+            ddlc: 'https://gh.ddlc.top/'
+            // 如果有更多的加速站点，可以在这里添加
+        };
+        // 获取所有需要动态更新的蓝色链接元素
+        const blueLinks = document.querySelectorAll('.help font[color="blue"]');
+
+        // 定义一个函数来更新蓝色链接的文本内容
+        function updateBlueLinks(selectedChannel) {
+            blueLinks.forEach(link => {
+                link.textContent = accelerationSites[selectedChannel];
+            });
+        }
+
+        // 初始化时设置默认值
+        updateBlueLinks(channelRadios[0].value);
+
+        // 为每个通道选择按钮添加事件监听器以在选择改变时更新链接
+        channelRadios.forEach(radio => {
+            radio.addEventListener('change', function() {
+                const selectedChannel = this.value;
+                updateBlueLinks(selectedChannel);
+            });
+        });
+        // 提交表单时的事件处理函数
+        function toSubmit(event) {
+            event.preventDefault();
+            const url = document.getElementById('url-input').value;
+            if (url.toLowerCase().indexOf(("github").toLowerCase()) < 0) {
+                /* 防止被滥用 */
+                alert("本工具仅能用于加速下载来自 GitHub 的资源！");
+            } else {
+                const selectedChannel = document.querySelector('input[name="channel"]:checked').value;
+                const accelerationUrl = accelerationSites[selectedChannel];
+                const fullUrl = accelerationUrl + url;
+                window.open(fullUrl);
+                return false;
+            }
+        }
+
+        // 给表单绑定提交事件处理函数
+        form.onsubmit = toSubmit;
+    </script>
+
+</body>
+
+</html>
