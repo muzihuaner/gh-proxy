@@ -18,6 +18,8 @@ github release、archive以及项目文件的加速项目，支持clone，有Clo
 
 - python版本支持进行文件大小限制，超过设定返回原地址 [issue #8](https://github.com/hunshcn/gh-proxy/issues/8)
 
+- python版本支持特定user/repo 封禁/白名单 以及passby [issue #41](https://github.com/hunshcn/gh-proxy/issues/41)
+
 ## 使用
 
 直接在copy出来的url前加`https://gh.api.99988866.xyz/`即可
@@ -25,6 +27,10 @@ github release、archive以及项目文件的加速项目，支持clone，有Clo
 也可以直接访问，在input输入
 
 ***大量使用请自行部署，以上域名仅为演示使用。***
+
+访问私有仓库可以通过
+
+`git clone https://user:TOKEN@ghproxy.com/https://github.com/xxxx/xxxx` [#71](https://github.com/hunshcn/gh-proxy/issues/71)
 
 以下都是合法输入（仅示例，文件不存在）：
 
@@ -46,9 +52,7 @@ github release、archive以及项目文件的加速项目，支持clone，有Clo
 
 注册，登陆，`Start building`，取一个子域名，`Create a Worker`。
 
-复制 [index.js](https://cdn.jsdelivr.net/hunshcn/gh-proxy@master/index.js)  到左侧代码框，`Save and deploy`。如果正常，右侧应显示首页。
-
-`index.js`默认配置下clone走github.com.cnpmjs.org，项目文件会走jsDeliver，如需走worker，修改Config变量即可
+复制 [index.js](https://cdn.jsdelivr.net/gh/hunshcn/gh-proxy@master/index.js)  到左侧代码框，`Save and deploy`。如果正常，右侧应显示首页。
 
 `ASSET_URL`是静态资源的url（实际上就是现在显示出来的那个输入框单页面）
 
@@ -75,11 +79,15 @@ docker run -d --name="gh-proxy-py" \
 
 按需求修改`app/main.py`的前几项配置
 
+*注意:* 可能需要在`return Response`前加两行
+```python3
+if 'Transfer-Encoding' in headers:
+    headers.pop('Transfer-Encoding')
+```
+
 ### 注意
 
 python版本的机器如果无法正常访问github.io会启动报错，请自行修改静态文件url
-
-workers版本默认配置下clone走github.com.cnpmjs.org，项目文件会走jsDeliver，如需走服务器，修改配置即可
 
 python版本默认走服务器（2021.3.27更新）
 
